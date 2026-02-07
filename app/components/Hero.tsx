@@ -2,12 +2,11 @@
 import Image from "next/image"
 import { useState } from "react";
 import { redirect } from "next/navigation";
-import { useUser } from "@clerk/nextjs"
-import { SignOutButton  , useAuth} from '@clerk/nextjs'
+import { SignOutButton, useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 export default function Hero() {
-   const { isLoaded, isSignedIn, user } = useAuth();
+   const { isLoaded, isSignedIn } = useAuth();
    const router = useRouter();
     const courses = [
 {
