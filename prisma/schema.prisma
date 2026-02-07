@@ -1,0 +1,142 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String  @id @default(cuid())
+  clerkId  String  @unique
+  email    String  @unique
+  name     String?
+  imageUrl String?
+
+  razorpayCustomer RazorpayCustomer?
+  purchases        Purchase[]
+  payments         RazorpayPayment[]
+  progress         CourseProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RazorpayCustomer {
+  id             String @id @default(cuid())
+  userId         String @unique
+  razorpayCustId String @unique
+
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Course {
+  id          String  @id @default(cuid())
+  title       String
+  description String
+  price       Int // INR (2199)
+  imageUrl    String?
+
+  purchases Purchase[]
+  payments  RazorpayPayment[]
+  progress  CourseProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Lesson    Lesson[]
+}
+
+model Purchase {
+  id       String @id @default(cuid())
+  userId   String
+  courseId String
+
+  razorpayPaymentId String?
+  status            PurchaseStatus @default(PENDING)
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, courseId])
+}
+
+model RazorpayPayment {
+  id       String @id @default(cuid())
+  userId   String
+  courseId String
+
+  razorpayOrderId   String                @unique
+  razorpayPaymentId String?
+  amount            Int
+  currency          String                @default("INR")
+  status            RazorpayPaymentStatus
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+model PromoCode {
+  id         String  @id @default(cuid())
+  code       String  @unique
+  salespersonName String
+  discount   Int     // discount in INR or %
+  usedCount  Int     @default(0)
+  createdAt  DateTime @default(now())
+}
+
+model CourseProgress {
+  id       String @id @default(cuid())
+  userId   String
+  courseId String
+
+  progress  Int     @default(0)
+  completed Boolean @default(false)
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, courseId])
+}
+
+model Lesson {
+  id       String  @id @default(uuid())
+  courseId String
+  title    String
+  order    Int
+  muxId    String? // later
+
+  Course Course @relation(fields: [courseId], references: [id])
+}
+
+model LessonProgress {
+  id       String  @id @default(uuid())
+  userId   String
+  lessonId String
+  watched  Boolean @default(false)
+}
+
+enum PurchaseStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+enum RazorpayPaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
