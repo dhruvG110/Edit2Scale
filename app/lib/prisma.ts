@@ -6,22 +6,14 @@ declare global {
   var prisma: PrismaClient | undefined;
 }
 
-// Use Prisma Data Proxy in Netlify / serverless builds if needed
-const isServerless = process.env.NETLIFY || process.env.VERCEL;
-
+// Only Node.js runtime (skip serverless / edge adapters)
 export const prisma =
   global.prisma ??
   new PrismaClient({
-    log: ['query', 'error'],
-    ...(isServerless
-      ? {
-          // Enable Data Proxy for serverless environments
-          engine: 'client',
-          adapter: 'data-proxy',
-        }
-      : {}),
+    log: ['query', 'error'], // logs queries & errors in dev
   });
 
-if (!isServerless && process.env.NODE_ENV !== 'production') {
+// Reuse Prisma client during dev hot reload
+if (process.env.NODE_ENV !== 'production') {
   global.prisma = prisma;
 }
