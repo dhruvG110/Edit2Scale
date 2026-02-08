@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { saveProgress } from '../../lib/api/progress';
 
 export async function POST(req: Request) {

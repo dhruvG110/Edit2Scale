@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getOrCreateDBUser } from '../auth';
 import { getCourseById } from '../services/course.service';
 import { createRazorpayOrder } from '../services/razorpay.service';

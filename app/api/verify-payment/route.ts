@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { verifyPayment } from '../../lib/api/verify-payment';
 
 export async function POST(req: Request) {

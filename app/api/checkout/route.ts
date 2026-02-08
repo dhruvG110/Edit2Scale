@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { checkout } from '../../lib/api/checkout';
 
 export async function POST(req: Request) {
