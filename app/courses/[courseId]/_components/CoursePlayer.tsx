@@ -6,7 +6,7 @@ import VideoPlayer from "./VideoPlayer";
 type Lesson = {
   id: string;
   title: string;
-  // For MUX video
+  muxPlaybackId: string; // For MUX video
 };
 
 export default function CoursePlayer({ lessons }: { lessons: Lesson[] }) {
@@ -47,7 +47,7 @@ export default function CoursePlayer({ lessons }: { lessons: Lesson[] }) {
 
             {/* Show video only for active lesson in mobile */}
             <div className="md:hidden mt-2">
-              {activeLesson.id === lesson.id && <VideoPlayer id={lesson.id} title={lesson.title} />}
+              {activeLesson.id === lesson.id && <VideoPlayer lesson={lesson} />}
             </div>
           </div>
         ))}
@@ -57,7 +57,7 @@ export default function CoursePlayer({ lessons }: { lessons: Lesson[] }) {
       <main className="flex-1 p-4 md:p-6">
         {/* Video Player for desktop/tablet */}
         <div className="hidden md:block">
-          <VideoPlayer id={activeLesson.id} title={activeLesson.title} />
+          <VideoPlayer lesson={activeLesson} />
         </div>
 
         <div className="mt-6 flex justify-end">
