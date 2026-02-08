@@ -25,10 +25,6 @@ export default function VideoPlayer() {
       <MuxPlayer
         playbackId={muxPlaybackId}
         streamType="on-demand"
-        controls ={true}
-        qualityToggle={true}
-        autoPlay={false}
-        muted={false}
         className="w-full h-full rounded-xl"
       />
 

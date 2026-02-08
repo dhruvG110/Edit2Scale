@@ -6,15 +6,15 @@ import VideoPlayer from "./VideoPlayer";
 type Lesson = {
   id: string;
   title: string;
-  muxPlaybackId: string; // For MUX video
+  // For MUX video
 };
 
 export default function CoursePlayer({ lessons }: { lessons: Lesson[] }) {
+  const [activeLesson, setActiveLesson] = useState<Lesson>(lessons?.[0] || ({} as Lesson));
+
   if (!lessons || lessons.length === 0) {
     return <div className="p-10 text-white">No lessons available.</div>;
   }
-
-  const [activeLesson, setActiveLesson] = useState<Lesson>(lessons[0]);
 
   const goToNextLesson = () => {
     const currentIndex = lessons.findIndex((l) => l.id === activeLesson.id);
@@ -47,7 +47,7 @@ export default function CoursePlayer({ lessons }: { lessons: Lesson[] }) {
 
             {/* Show video only for active lesson in mobile */}
             <div className="md:hidden mt-2">
-              {activeLesson.id === lesson.id && <VideoPlayer lesson={lesson} />}
+              {activeLesson.id === lesson.id && <VideoPlayer id={lesson.id} title={lesson.title} />}
             </div>
           </div>
         ))}
@@ -57,7 +57,7 @@ export default function CoursePlayer({ lessons }: { lessons: Lesson[] }) {
       <main className="flex-1 p-4 md:p-6">
         {/* Video Player for desktop/tablet */}
         <div className="hidden md:block">
-          <VideoPlayer lesson={activeLesson} />
+          <VideoPlayer id={activeLesson.id} title={activeLesson.title} />
         </div>
 
         <div className="mt-6 flex justify-end">
