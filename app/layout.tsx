@@ -25,7 +25,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  await getOrCreateDBUser();
+  // await getOrCreateDBUser();
   return (
     <ClerkProvider
     appearance={{
