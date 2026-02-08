@@ -9,9 +9,7 @@ declare global {
 // Only Node.js runtime (skip serverless / edge adapters)
 export const prisma =
   global.prisma ??
-  new PrismaClient({
-    log: ['query', 'error'], // logs queries & errors in dev
-  });
+  new PrismaClient();
 
 // Reuse Prisma client during dev hot reload
 if (process.env.NODE_ENV !== 'production') {
