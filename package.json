@@ -12,7 +12,6 @@
   "dependencies": {
     "@clerk/nextjs": "^6.36.5",
     "@mux/mux-player-react": "^3.10.2",
-    "@prisma/client": "^5.22.0",
     "next": "16.1.1",
     "razorpay": "^2.9.6",
     "react": "19.2.3",
@@ -20,6 +19,7 @@
     "stripe": "^20.1.2"
   },
   "devDependencies": {
+    "@prisma/client": "^7.3.0",
     "@prisma/config": "^7.3.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
