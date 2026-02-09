@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/api/checkout/route.ts
 export async function POST(req: Request) {
   try {

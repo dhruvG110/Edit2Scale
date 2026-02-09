@@ -1,9 +1,5 @@
-import { prisma } from '../prisma';
-
-export async function getCourseProgress(
-  userId: string,
-  courseId: string
-) {
+export async function getCourseProgress(userId: string, courseId: string) {
+  const { prisma } = await import('../prisma'); // <-- dynamic import
   return prisma.courseProgress.findUnique({
     where: {
       userId_courseId: {
@@ -14,11 +10,8 @@ export async function getCourseProgress(
   });
 }
 
-export async function updateCourseProgress(
-  userId: string,
-  courseId: string,
-  progress: number
-) {
+export async function updateCourseProgress(userId: string, courseId: string, progress: number) {
+  const { prisma } = await import('../prisma'); // <-- dynamic import
   return prisma.courseProgress.upsert({
     where: {
       userId_courseId: {
