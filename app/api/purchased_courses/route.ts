@@ -1,10 +1,12 @@
 // app/api/purchased-course/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "../../lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
 
 export async function GET(req: NextRequest) {
   try {
+    // Dynamic import prisma to avoid build-time execution
+    const { prisma } = await import("../../lib/prisma");
+
     // Get Clerk user from session
     const { userId } = getAuth(req); // automatically gets user from request/session
 
