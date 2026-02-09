@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getOrCreateDBUser } from '../auth';
-import { getCourseById } from '../services/course.service';
-import { createRazorpayOrder } from '../services/razorpay.service';
-import { hasPurchased } from '../services/purchase.service';
-import { prisma } from '../prisma';
-
 export async function checkout(courseId: string, promoCode?: string) {
+  // Dynamic import Prisma inside the function
+  const { prisma } = await import('../prisma');
+  const { getOrCreateDBUser } = await import('../auth');
+  const { getCourseById } = await import('../services/course.service');
+  const { createRazorpayOrder } = await import('../services/razorpay.service');
+  const { hasPurchased } = await import('../services/purchase.service');
+
   // 1️⃣ Ensure user is authenticated
   const user = await getOrCreateDBUser();
   if (!user) throw new Error('Unauthorized');
@@ -31,5 +32,5 @@ export async function checkout(courseId: string, promoCode?: string) {
   const finalAmount = course.price - discount;
   const order = await createRazorpayOrder(user.id, course, finalAmount);
 
-  return { order, discount, appliedPromo: promo?.salesperson || null };
+  return { order, discount, appliedPromo: promo?.salespersonName ?? null };
 }

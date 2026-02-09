@@ -1,19 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { checkout } from '../../lib/api/checkout';
-
+// app/api/checkout/route.ts
 export async function POST(req: Request) {
   try {
-    const { courseId } = await req.json();
+    const { courseId, promoCode } = await req.json();
 
-    const order = await checkout(courseId);
+    // Dynamic import to avoid Prisma being initialized at build
+    const { checkout } = await import('../../lib/api/checkout');
 
-    return Response.json(order);
+    const order = await checkout(courseId, promoCode);
+
+    return new Response(JSON.stringify(order), { status: 200 });
   } catch (err: any) {
     console.error(err);
-    return new Response(
-      JSON.stringify({ error: err.message }),
-      
-      { status: 400 }
-    );
+    return new Response(JSON.stringify({ error: err.message }), { status: 400 });
   }
 }
